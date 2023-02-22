@@ -1,0 +1,346 @@
+---
+title: "lab12"
+author: "Xinlong Wan"
+format: pdf
+---
+
+# Load package and data
+
+```{r}
+library(BiocManager)
+library(DESeq2)
+
+counts <- read.csv("airway_scaledcounts.csv", row.names=1)
+metadata <-  read.csv("airway_metadata.csv")
+
+head(counts)
+```
+
+> Q1. 
+
+```{r}
+print(paste(nrow(counts), 'genes'))
+```
+
+
+> Q2. 
+
+```{r}
+print(paste(nrow(metadata[metadata$dex=='control',]), 'control cell lines'))
+```
+
+# Toy differential gene expression
+
+```{r}
+control <- metadata[metadata[,"dex"]=="control",]
+control.counts <- counts[ ,control$id]
+control.mean <- rowSums( control.counts )/4 
+head(control.mean)
+```
+
+> Q3.
+
+Change the hardcoded "4" to be the number of genes.
+
+```{r}
+control <- metadata[metadata[,"dex"]=="control",]
+control.counts <- counts[ ,control$id]
+control.mean <- rowSums( control.counts )/nrow(control)
+head(control.mean)
+```
+
+> Q4. 
+
+```{r}
+treated <- metadata[metadata[,"dex"]=="treated",]
+treated.counts <- counts[ ,treated$id]
+treated.mean <- rowSums( treated.counts )/nrow(treated)
+head(treated.mean)
+```
+
+```{r}
+# combine 
+meancounts <- data.frame(control.mean, treated.mean)
+colSums(meancounts)
+```
+
+
+> Q5.
+
+```{r}
+plot(meancounts)
+```
+
+> Q5(b)
+
+```{r}
+library(ggplot2)
+ggplot(meancounts, aes(x=control.mean, y=treated.mean))+
+  geom_point()
+```
+
+> Q6.
+
+```{r}
+ggplot(meancounts, aes(x=control.mean, y=treated.mean))+
+  geom_point() +
+  scale_x_continuous(trans="log2") +
+  scale_y_continuous(trans="log2") +
+  labs(x='log Control', y= 'log Treated')
+```
+
+```{r}
+meancounts$log2fc <- log2(meancounts[,"treated.mean"]/meancounts[,"control.mean"])
+head(meancounts)
+```
+
+```{r}
+zero.vals <- which(meancounts[,1:2]==0, arr.ind=TRUE)
+
+to.rm <- unique(zero.vals[,1])
+mycounts <- meancounts[-to.rm,]
+head(mycounts)
+```
+
+> Q7. 
+
+arr.ind decides whether to return the array indices if x is an array. We want it to be TRUE as we want to know which genes and samples have zero counts. We are going to delete all genes that have zero count so we'll need the row indices. Calling unique() will ensure each row will only be counted once even if for one gene there're two samples are zero.
+
+
+> Q8. 250 genes (code see below)
+
+```{r}
+up.ind <- mycounts$log2fc > 2
+down.ind <- mycounts$log2fc < (-2)
+
+nrow(mycounts[up.ind,])
+```
+
+> Q9. 367
+
+```{r}
+nrow(mycounts[down.ind,])
+```
+
+> Q10. 
+
+We shouldn't trust these results, as they are purely based on log-fold change. The difference can be large without being statistically significant. We need to perform statistical test to determine the statistical significance of the difference. 
+
+# DESeq2 analysis
+
+```{r}
+library(DESeq2)
+citation("DESeq2")
+```
+```{r}
+dds <- DESeqDataSetFromMatrix(countData=counts, 
+                              colData=metadata, 
+                              design=~dex)
+dds
+```
+
+```{r}
+dds <- DESeq(dds)
+```
+
+```{r}
+res <- results(dds)
+res <- as.data.frame(res)
+head(res)
+```
+
+```{r}
+summary(res)
+```
+```{r}
+res05 <- results(dds, alpha=0.05)
+summary(res05)
+```
+
+#.  Adding annotation data
+
+```{r}
+library("AnnotationDbi")
+library("org.Hs.eg.db")
+```
+```{r}
+columns(org.Hs.eg.db)
+```
+
+```{r}
+res$symbol <- mapIds(org.Hs.eg.db,
+                     keys=row.names(res), # Our genenames
+                     keytype="ENSEMBL",        # The format of our genenames
+                     column="SYMBOL",          # The new format we want to add
+                     multiVals="first")
+```
+
+
+```{r}
+head(res)
+```
+
+> Q11.
+
+```{r}
+res$entrez <- mapIds(org.Hs.eg.db,
+                     keys=row.names(res),
+                     column="ENTREZID",
+                     keytype="ENSEMBL",
+                     multiVals="first")
+
+res$uniprot <- mapIds(org.Hs.eg.db,
+                     keys=row.names(res),
+                     column="UNIPROT",
+                     keytype="ENSEMBL",
+                     multiVals="first")
+
+res$genename <- mapIds(org.Hs.eg.db,
+                     keys=row.names(res),
+                     column="GENENAME",
+                     keytype="ENSEMBL",
+                     multiVals="first")
+
+head(res)
+```
+
+```{r}
+# arrange and view the results by the adjusted p-value
+ord <- order( res$padj )
+#View(res[ord,])
+head(res[ord,])
+```
+
+write and save it to csv
+```{r}
+write.csv(res[ord,], "deseq_results.csv")
+```
+
+
+# Data Visualization
+
+```{r}
+# volcano plot
+plot( res$log2FoldChange,  -log(res$padj), 
+      xlab="Log2(FoldChange)",
+      ylab="-Log(P-value)")
+```
+
+
+
+```{r}
+plot( res$log2FoldChange,  -log(res$padj), 
+ ylab="-Log(P-value)", xlab="Log2(FoldChange)")
+
+# Add some cut-off lines
+abline(v=c(-2,2), col="darkgray", lty=2)
+abline(h=-log(0.05), col="darkgray", lty=2)
+```
+
+
+```{r}
+# Setup our custom point color vector 
+mycols <- rep("gray", nrow(res))
+mycols[ abs(res$log2FoldChange) > 2 ]  <- "red" 
+
+inds <- (res$padj < 0.01) & (abs(res$log2FoldChange) > 2 )
+mycols[ inds ] <- "blue"
+
+# Volcano plot with custom colors 
+plot( res$log2FoldChange,  -log(res$padj), 
+ col=mycols, ylab="-Log(P-value)", xlab="Log2(FoldChange)" )
+
+# Cut-off lines
+abline(v=c(-2,2), col="gray", lty=2)
+abline(h=-log(0.1), col="gray", lty=2)
+```
+
+
+```{r}
+library(EnhancedVolcano)
+
+x <- as.data.frame(res)
+
+EnhancedVolcano(x,
+    lab = x$symbol,
+    x = 'log2FoldChange',
+    y = 'pvalue')
+
+```
+
+# Pathway analysis
+
+
+Now we can load the packages and setup the KEGG data-sets we need. The gageData package has pre-compiled databases mapping genes to KEGG pathways and GO terms for common organisms. kegg.sets.hs is a named list of 229 elements. Each element is a character vector of member gene Entrez IDs for a single KEGG pathway.
+
+```{r}
+library(pathview)
+library(gage)
+library(gageData)
+
+data(kegg.sets.hs)
+
+# Examine the first 2 pathways in this kegg set for humans
+head(kegg.sets.hs, 2)
+```
+
+
+gage() function requires a **named** vector of fold changes.
+
+```{r}
+foldchanges = res$log2FoldChange
+names(foldchanges) = res$entrez
+head(foldchanges)
+```
+
+```{r}
+# Get the results
+keggres = gage(foldchanges, gsets=kegg.sets.hs)
+
+```
+
+```{r}
+attributes(keggres)
+
+```
+```{r}
+# Look at the first three down (less) pathways
+head(keggres$less, 3)
+```
+Visualize the pathway
+
+```{r}
+pathview(gene.data=foldchanges, pathway.id="hsa05310")
+```
+```{r}
+# A different PDF based output of the same data
+pathview(gene.data=foldchanges, pathway.id="hsa05310", kegg.native=FALSE)
+```
+
+![hsa05332](hsa05310.png)
+
+
+> Q12.
+
+```{r}
+# get the id of the top 2 downregulated pathways
+
+# Look at the first three down (less) pathways
+head(keggres$less, 2)
+```
+
+
+```{r}
+pathview(gene.data=foldchanges, pathway.id=c('hsa04940', 'hsa05332'))
+```
+
+![hsa04940](hsa04940.png)
+
+
+
+![hsa05332](hsa05332.png)
+
+```{r}
+sessionInfo()
+```
+

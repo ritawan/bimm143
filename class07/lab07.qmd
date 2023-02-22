@@ -1,0 +1,182 @@
+---
+title: "lab07"
+author: "Xinlong Wan"
+format: pdf
+---
+
+## kmeans
+```{r}
+hist(rnorm(30, -3))
+```
+
+
+```{r}
+tmp <- c(rnorm(30, -3), rnorm(30, +3))
+x <- cbind(x=tmp, y=rev(tmp))
+head(x)
+
+```
+
+
+```{r}
+plot(x)
+```
+
+Use the kmeans function 
+```{r}
+km <- kmeans(x, centers=2, nstart=20)
+km
+```
+```{r}
+# play with kmeans and ask for different number of clusters
+
+km <- kmeans(x, centers=3, nstart=20)
+plot(x, col=km$cluster)
+points(km$centers, col="blue", pch=16, cex=2)
+
+
+```
+
+## Hierarchical clustering
+
+```{r}
+d <- dist(x)
+hc <- hclust(d)
+
+hc
+```
+There is a plot method for hclust result.
+
+```{r}
+plot(hc)
+abline(h=10, col='red')
+```
+
+To get all the members of a given cluster residing in the same cut branch.
+```{r}
+cut_hc <- cutree(hc, h=10)
+cut_hc
+```
+```{r}
+plot(x, col=cut_hc)
+```
+
+It is often helpful to use "k" instead of "h=" in cutree.
+
+```{r}
+cutree(hc, k=4)
+```
+
+# PCA
+
+```{r}
+url <- "https://tinyurl.com/UK-foods"
+x <- read.csv(url)
+```
+
+```{r}
+ncol(x)
+nrow(x)
+```
+> Q1. 5 columns 17 rows.
+
+```{r}
+#View(head(x, 6))
+head(x,6)
+```
+
+```{r}
+# change the index to first column
+
+rownames(x) <- x[,1]
+x <- x[,-1]
+head(x)
+dim(x)
+```
+
+```{r}
+x <- read.csv(url, row.names=1)
+head(x)
+
+```
+> Q2. the second approach is more robust. Since we don't need to reassign x. And we can have two dataset from the same url but with different columns as rownames.
+
+Visualize the data
+```{r}
+barplot(as.matrix(x), beside=T, col=rainbow(nrow(x)))
+```
+
+> Q3. # change the beside to False to get a stacked barplot
+
+
+```{r}
+barplot(as.matrix(x), beside=F, col=rainbow(nrow(x)))
+```
+
+```{r}
+x$color <- rainbow(nrow(x))
+
+pairs(x[, 1:4], col=x$color, pch=16)
+par(xpd=TRUE)
+legend("topleft", fill = unique(x$color), legend = c( rownames(x) ), cex=0.2)
+```
+
+> Q5. It makes pairwise comparison of each combination. plot(2,3) is comparing Wales and Scotland for the prize of each different food type. Points on diagonal mean the prize of that specific food cost the same in the two countries in comparison.
+
+> Q6. Certain food is higher in N. Ireland. But it's generally hard to compare. 
+
+## Use the PCA on the dataset
+
+```{r}
+x <- x[, 1:4]
+
+pca <- prcomp(t(x))
+summary(pca)
+head(pca)
+```
+
+
+> Q7
+
+```{r}
+plot(pca$x[,1], pca$x[,2], xlab="PC1", ylab="PC2", xlim=c(-270,500))
+text(pca$x[,1], pca$x[,2], colnames(x))
+
+```
+> Q8.
+
+```{r}
+plot(pca$x[,1], pca$x[,2], xlab="PC1", ylab="PC2", xlim=c(-270,500), pch=15,
+     col=c('orange', 'red', 'blue', 'darkgreen'))
+text(pca$x[,1], pca$x[,2], colnames(x), col=c('orange', 'red', 'blue', 'darkgreen'))
+
+```
+
+```{r}
+v <- round( pca$sdev^2/sum(pca$sdev^2) * 100 )
+v
+```
+```{r}
+z <- summary(pca)
+z$importance
+```
+
+```{r}
+barplot(v, xlab="Principal Component", ylab="Percent Variation")
+```
+The first two PCs capture most of the variance.
+
+```{r}
+# visualize the loading for each variables in PC1.
+par(mar=c(10, 3, 0.35, 0))
+barplot( pca$rotation[,1], las=2 )
+```
+> Q9
+
+```{r}
+# loading in second PC
+par(mar=c(10, 3, 0.35, 0))
+barplot( pca$rotation[,2], las=2 )
+```
+
+

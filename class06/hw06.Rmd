@@ -1,0 +1,55 @@
+---
+title: "hw06"
+author: "Xinlong Wan"
+date: "2023-01-30"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# install.packages("bio3d")
+library("bio3d")
+
+```
+
+
+
+```{r}
+
+#' This function takes in the name and chain of a specific protein and plot the Bfactor across the residue of the protein.
+#'
+#' @param prot a string representative of the name of the protein
+#' @param chain a string representative of the protein chain
+#'
+#' @return # a graph that shows the Bfactor across the residue of the protein
+#' @export
+#'
+#' @examples
+#'  prot <- "4AKE"
+#'  chain <- "A"
+#'  
+#'  prot_func(prot, chain)
+#'  
+prot_func <- function(prot, chain) {
+  # get the data of specified protein
+  kinase <- read.pdb(prot)
+  # trim the data based on specific chain
+  kinase.chain <- trim.pdb(kinase, chain=chain, elety="CA")
+  # plot Bfactor across residue of the protein.
+  kinase.b <- kinase.chain$atom$b
+  plotb3(kinase.b, sse=kinase.chain, typ="l", ylab="Bfactor")
+}
+
+```
+
+```{r}
+prot_func("4AKE","A")
+```
+
+```{r}
+prot_func("1AKE", "B")
+```
+

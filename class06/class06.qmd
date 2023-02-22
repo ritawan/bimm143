@@ -1,0 +1,94 @@
+---
+title: "class06"
+author: "Xinlong Wan"
+format: pdf
+---
+
+> Q1.
+
+Grade is a function to determine an overall grade from a vector of student homework assignment scores dropping the lowest single score. 
+
+It's unfair to drop all the NA submission, so we'll make all NA to zero.
+
+```{r}
+
+#' Calculate the mean grade from a vector of student homework assignment scores dropping the lowest single score.
+#' Missing values will be treated as zero.
+#' @param hw_grades A numeric vector of homework scores
+#'
+#' @return Average score
+#' @export
+#'
+#' @examples
+#'  student1 <- c(100, 100, 100, 100, 100, 100, 100, 90)
+#'  grade(student1)
+#' 
+grade <- function(hw_grades) {
+  
+  # make all the missing submission 0 by masking
+  hw_grades[is.na(hw_grades)]<-0
+  # drop the lowest numerical hw grade
+  mean(hw_grades[-which.min(hw_grades)])
+    
+}
+
+```
+
+Use the function on the whole class.
+CSV format: “https://tinyurl.com/gradeinput”
+
+```{r}
+url <- "https://tinyurl.com/gradeinput"
+gradebook <- read.csv(url, row.names = 1)
+
+apply(gradebook, 1, grade)
+```
+
+
+> Q2.
+
+```{r}
+
+results <- apply(gradebook, 1, grade)
+# highest scoring student
+which.max(results)
+# or
+sort(results, decreasing = TRUE)
+```
+
+> Q3.
+
+```{r}
+
+# hardest homework (lowest score hw)
+
+# by means
+which.min(apply(gradebook, 2, mean, na.rm=TRUE))
+
+# by median
+which.min(apply(gradebook, 2, median, na.rm=TRUE))
+
+```
+Check the data distribution to determine which one is more appropriate
+
+```{r}
+boxplot(gradebook)
+
+```
+Looks like the hw2 is the hardest hw.
+
+> Q4.
+
+```{r}
+
+# mask the gradebook na 
+masked.gradebook <- gradebook
+
+masked.gradebook[is.na(masked.gradebook)] <- 0
+
+# calculate correlation
+
+which.max(apply(masked.gradebook, 2, cor, x=results))
+
+```
+

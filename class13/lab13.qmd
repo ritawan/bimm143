@@ -1,0 +1,243 @@
+---
+title: "class13"
+author: "Xinlong Wan"
+format: html
+---
+
+# Differential expression
+
+```{r}
+library(DESeq2)
+
+countFile<- "https://bioboot.github.io/bimm143_W18/class-material/GSE37704_featurecounts.csv"
+metaFile  <- "https://bioboot.github.io/bimm143_W18/class-material/GSE37704_metadata.csv"
+
+# Import metadata and take a peak
+colData = read.csv(metaFile, row.names=1)
+head(colData)
+
+# Import countdata
+countData = read.csv(countFile, row.names=1)
+head(countData)
+```
+
+> Q.
+
+```{r}
+# Note we need to remove the odd first $length col
+countData <- as.matrix(countData[,-1])
+head(countData)
+```
+
+> Q
+
+
+```{r}
+
+# Filter count data where you have 0 read count across all samples.
+countData = countData[!rowSums(countData)==0, ]
+head(countData)
+
+```
+
+
+# Running DESeq2
+
+```{r}
+dds = DESeqDataSetFromMatrix(countData=countData,
+                             colData=colData,
+                             design=~condition)
+dds = DESeq(dds)
+```
+
+```{r}
+dds
+```
+
+```{r}
+res = results(dds, contrast=c("condition", "hoxa1_kd", "control_sirna"))
+```
+
+
+>Q.
+
+```{r}
+summary(res)
+```
+
+```{r}
+plot( res$log2FoldChange, -log(res$padj) )
+```
+
+> Q.
+
+
+```{r}
+# Make a color vector for all genes
+mycols <- rep("gray", nrow(res) )
+
+# Color red the genes with absolute fold change above 2
+mycols[ abs(res$log2FoldChange) > 2 ] <- "red"
+
+# Color blue those with adjusted p-value less than 0.01
+#  and absolute fold change more than 2
+inds <- (res$pvalue<0.01) & (abs(res$log2FoldChange) > 2 )
+mycols[ inds ] <- "blue"
+
+plot( res$log2FoldChange, -log(res$padj), col=mycols, xlab="Log2(FoldChange)", ylab="-Log(P-value)" )
+```
+
+
+# Adding gene annotation
+
+```{r}
+
+library("AnnotationDbi")
+library("org.Hs.eg.db")
+
+columns(org.Hs.eg.db)
+
+res$symbol = mapIds(org.Hs.eg.db,
+                    keys=row.names(res), 
+                    keytype="ENSEMBL",
+                    column='SYMBOL',
+                    multiVals="first")
+
+res$entrez = mapIds(org.Hs.eg.db,
+                    keys=row.names(res),
+                    keytype="ENSEMBL",
+                    column="ENTREZID",
+                    multiVals="first")
+
+res$name =   mapIds(org.Hs.eg.db,
+                    keys=row.names(res),
+                    keytype='ENSEMBL',
+                    column='GENENAME',
+                    multiVals="first")
+
+head(res, 10)
+
+```
+
+
+> Q.
+
+```{r}
+res = res[order(res$pvalue),]
+write.csv(res, file ="deseq_results.csv")
+
+```
+
+
+# Pathway
+
+```{r}
+library(pathview)
+
+library(gage)
+library(gageData)
+
+data(kegg.sets.hs)
+data(sigmet.idx.hs)
+
+# Focus on signaling and metabolic pathways only
+kegg.sets.hs = kegg.sets.hs[sigmet.idx.hs]
+
+# Examine the first 3 pathways
+head(kegg.sets.hs, 3)
+
+```
+
+
+```{r}
+foldchanges = res$log2FoldChange
+names(foldchanges) = res$entrez
+head(foldchanges)
+```
+
+```{r}
+# Get the results
+keggres = gage(foldchanges, gsets=kegg.sets.hs)
+```
+
+```{r}
+attributes(keggres)
+```
+
+```{r}
+# Look at the first few down (less) pathways
+head(keggres$less)
+```
+```{r}
+pathview(gene.data=foldchanges, pathway.id="hsa04110")
+```
+
+![hsa0410](hsa04110.png)
+
+```{r}
+## Focus on top 5 upregulated pathways here for demo purposes only
+keggrespathways <- rownames(keggres$greater)[1:5]
+
+# Extract the 8 character long IDs part of each string
+keggresids = substr(keggrespathways, start=1, stop=8)
+keggresids
+
+```
+
+```{r}
+# top 5 up-regulated
+pathview(gene.data=foldchanges, pathway.id=keggresids, species="hsa")
+```
+
+> Q.
+
+```{r}
+# top 5 down-regulated
+keggrespathways <- rownames(keggres$less)[1:5]
+
+# Extract the 8 character long IDs part of each string
+keggresids = substr(keggrespathways, start=1, stop=8)
+keggresids
+
+
+pathview(gene.data=foldchanges, pathway.id=keggresids, species="hsa")
+
+```
+
+
+# Ontology
+
+```{r}
+data(go.sets.hs)
+data(go.subs.hs)
+
+# Focus on Biological Process subset of GO
+gobpsets = go.sets.hs[go.subs.hs$BP]
+
+gobpres = gage(foldchanges, gsets=gobpsets, same.dir=TRUE)
+
+lapply(gobpres, head)
+```
+
+# Reactome
+
+```{r}
+sig_genes <- res[res$padj <= 0.05 & !is.na(res$padj), "symbol"]
+print(paste("Total number of significant genes:", length(sig_genes)))
+```
+
+
+```{r}
+write.table(sig_genes, file="significant_genes.txt", row.names=FALSE, col.names=FALSE, quote=FALSE)
+```
+
+Then, to perform pathway analysis online go to the Reactome website (https://reactome.org/PathwayBrowser/#TOOL=AT). Select “choose file” to upload your significant gene list. Then, select the parameters “Project to Humans”, then click “Analyze”.
+
+> Q.
+
+```{r}
+
+```
+
+
+
