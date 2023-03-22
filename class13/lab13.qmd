@@ -1,7 +1,7 @@
 ---
 title: "class13"
 author: "Xinlong Wan"
-format: html
+format: pdf
 ---
 
 # Differential expression
@@ -233,11 +233,7 @@ write.table(sig_genes, file="significant_genes.txt", row.names=FALSE, col.names=
 
 Then, to perform pathway analysis online go to the Reactome website (https://reactome.org/PathwayBrowser/#TOOL=AT). Select “choose file” to upload your significant gene list. Then, select the parameters “Project to Humans”, then click “Analyze”.
 
-> Q.
 
-```{r}
-
-```
 
 
 

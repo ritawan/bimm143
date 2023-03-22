@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Xinlong Wan">
+
+<title>fina_a_gene</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="find_a_gene_files/libs/clipboard/clipboard.min.js"></script>
+<script src="find_a_gene_files/libs/quarto-html/quarto.js"></script>
+<script src="find_a_gene_files/libs/quarto-html/popper.min.js"></script>
+<script src="find_a_gene_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="find_a_gene_files/libs/quarto-html/anchor.min.js"></script>
+<link href="find_a_gene_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="find_a_gene_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="find_a_gene_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="find_a_gene_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="find_a_gene_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">fina_a_gene</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Xinlong Wan </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="import-alignment" class="level1">
+<h1>import alignment</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bio3d)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>aln <span class="ot">=</span> <span class="fu">read.fasta</span>(<span class="st">"multi_align.clw.fst"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>i_score <span class="ot">=</span> <span class="fu">seqidentity</span>(aln, <span class="at">normalize=</span><span class="cn">TRUE</span>, <span class="at">similarity=</span><span class="cn">FALSE</span>, <span class="at">ncore=</span><span class="dv">1</span>, <span class="at">nseg.scale=</span><span class="dv">1</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>i_score</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                         Rabbit Elephant_seal   Dog Harbor_seal Pacific_walrus
+Rabbit                    1.000         0.844 0.820       0.848          0.848
+Elephant_seal             0.844         1.000 0.933       0.956          0.956
+Dog                       0.820         0.933 1.000       0.957          0.957
+Harbor_seal               0.848         0.956 0.957       1.000          0.978
+Pacific_walrus            0.848         0.956 0.957       0.978          1.000
+Chinese_tree_shrew        0.854         0.867 0.812       0.848          0.848
+Human_preinsulin_trimmed  0.880         0.911 0.860       0.891          0.891
+Mandrillus                0.860         0.911 0.840       0.891          0.891
+Tibetan                   0.875         0.911 0.854       0.891          0.891
+                         Chinese_tree_shrew Human_preinsulin_trimmed Mandrillus
+Rabbit                                0.854                    0.880      0.860
+Elephant_seal                         0.867                    0.911      0.911
+Dog                                   0.812                    0.860      0.840
+Harbor_seal                           0.848                    0.891      0.891
+Pacific_walrus                        0.848                    0.891      0.891
+Chinese_tree_shrew                    1.000                    0.938      0.938
+Human_preinsulin_trimmed              0.938                    1.000      0.980
+Mandrillus                            0.938                    0.980      1.000
+Tibetan                               0.938                    1.000      1.000
+                         Tibetan
+Rabbit                     0.875
+Elephant_seal              0.911
+Dog                        0.854
+Harbor_seal                0.891
+Pacific_walrus             0.891
+Chinese_tree_shrew         0.938
+Human_preinsulin_trimmed   1.000
+Mandrillus                 1.000
+Tibetan                    1.000</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot identity matrix</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.dmat</span>(i_score, <span class="at">color.palette =</span> heat.colors, <span class="at">axes=</span><span class="cn">TRUE</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">main=</span><span class="st">"Sequence Identity"</span>, <span class="at">xlab=</span><span class="st">"Sequence"</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">ylab=</span><span class="st">"Sequence"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="find_a_gene_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fig <span class="ot">&lt;-</span> <span class="fu">heatmap</span>(i_score)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="find_a_gene_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$rowInd
+[1] 3 2 4 5 1 6 8 7 9
+
+$colInd
+[1] 3 2 4 5 1 6 8 7 9
+
+$Rowv
+NULL
+
+$Colv
+NULL</code></pre>
+</div>
+</div>
+</section>
+<section id="blast" class="level1">
+<h1>blast</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>seq <span class="ot">=</span> <span class="st">"LAVGQVELGGGPGAGSLQPLALEGSLQKRGIVEQCCTSICSLYQLENYCN"</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">blast.pdb</span>(seq, <span class="at">database =</span> <span class="st">"pdb"</span>, <span class="at">time.out =</span> <span class="cn">NULL</span>, <span class="at">chain.single=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Searching ... please wait (updates every 5 seconds) RID = 0XSRM8ZK016 
+ .
+ Reporting 70 hits</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$hit.tbl
+       queryid subjectids identity alignmentlength mismatches gapopens q.start
+1  Query_21773     6B3Q_a   98.000              50          1        0       1
+2  Query_21773     2KQP_A   98.000              50          1        0       1
+3  Query_21773     6PXV_D  100.000              36          0        0      15
+4  Query_21773     6U46_A   77.419              31          7        0      19
+5  Query_21773     1EFE_A  100.000              23          0        0      28
+6  Query_21773     6ZI8_A   91.667              24          2        0      27
+7  Query_21773     7JP3_A   78.571              28          6        0      23
+8  Query_21773     1T0C_A   96.296              27          1        0       1
+9  Query_21773     2QIU_A  100.000              22          0        0      29
+10 Query_21773     1ZEI_A   95.455              22          1        0      29
+11 Query_21773     1SJU_A   91.304              23          2        0      28
+12 Query_21773     2JZQ_A   91.304              23          2        0      28
+13 Query_21773     6INS_E   95.455              22          1        0      29
+14 Query_21773     5MHD_A  100.000              21          0        0      30
+15 Query_21773     1A7F_A  100.000              21          0        0      30
+16 Query_21773     2KXK_A  100.000              21          0        0      30
+17 Query_21773     6TYH_A  100.000              21          0        0      30
+18 Query_21773     2BN3_A   95.238              21          1        0      30
+19 Query_21773     7MQO_A   95.238              21          1        0      30
+20 Query_21773     1XW7_A   95.238              21          1        0      30
+21 Query_21773     2JUM_A   95.238              21          1        0      30
+22 Query_21773     1MHI_A  100.000              20          0        0      31
+23 Query_21773     5MWQ_A   95.238              21          1        0      30
+24 Query_21773     1JCA_A   95.238              21          1        0      30
+25 Query_21773     1K3M_A   95.238              21          1        0      30
+26 Query_21773     7SL2_G   95.238              21          1        0      30
+27 Query_21773     2JUU_A   95.238              21          1        0      30
+28 Query_21773     5WBT_A   86.957              23          3        0      28
+29 Query_21773     1KMF_A   95.238              21          1        0      30
+30 Query_21773     5WDM_A   86.957              23          3        0      28
+31 Query_21773     4A7E_A   95.238              21          1        0      30
+32 Query_21773     1IOH_A   95.238              21          1        0      30
+33 Query_21773     1J73_A   95.238              21          1        0      30
+34 Query_21773     2WBY_C  100.000              20          0        0      30
+35 Query_21773     4IYD_A  100.000              20          0        0      30
+36 Query_21773     1APH_A   90.476              21          2        0      30
+37 Query_21773     4EFX_A   95.238              21          1        0      30
+38 Query_21773     7SL1_E   95.238              21          1        0      30
+39 Query_21773     3GKY_A   90.476              21          2        0      30
+40 Query_21773     6S4I_A   95.238              21          1        0      30
+41 Query_21773     1IOG_A   95.238              21          1        0      30
+42 Query_21773     3KQ6_A   90.476              21          2        0      30
+43 Query_21773     6VES_A   90.476              21          2        0      30
+44 Query_21773     3FQ9_A   95.000              20          1        0      31
+45 Query_21773     2L1Z_A   85.714              21          3        0      30
+46 Query_21773     5AZZ_A   85.714              21          3        0      30
+47 Query_21773     1VKT_A   90.476              21          2        0      30
+48 Query_21773     1LKQ_A  100.000              18          0        0      33
+49 Query_21773     5T7R_A   90.476              21          2        0      30
+50 Query_21773     2W44_A  100.000              17          0        0      34
+51 Query_21773     4Y19_C  100.000              16          0        0      15
+52 Query_21773     6UM2_B   56.000              25         11        0      25
+53 Query_21773     1IGL_A   56.000              25         11        0      25
+54 Query_21773     5L3M_A   59.091              22          9        0      28
+55 Query_21773     5L3N_A   59.091              22          9        0      28
+56 Query_21773     1B9G_A   50.000              24         12        0      26
+57 Query_21773     1TGR_A   47.826              23         12        0      27
+58 Query_21773     1BQT_A   55.000              20          9        0      30
+59 Query_21773     2WFV_A   45.455              22         12        0      29
+60 Query_21773     3LRI_A   55.000              20          9        0      30
+61 Query_21773     6RVA_X   50.000              20         10        0      30
+62 Query_21773     8EYR_C   50.000              22         11        0      28
+63 Query_21773     2WFU_A   42.857              21         12        0      30
+64 Query_21773     5NCN_B   30.000              40         25        1      11
+65 Query_21773     4P1B_A   52.941              17          8        0      14
+66 Query_21773     3RMK_A   52.941              17          8        0      14
+67 Query_21773     3RI7_A   52.941              17          8        0      14
+68 Query_21773     5TDS_A   52.941              17          8        0      14
+69 Query_21773     3GE3_A   52.941              17          8        0      14
+70 Query_21773     3DHG_A   52.941              17          8        0      14
+   q.end s.start s.end   evalue bitscore positives mlog.evalue pdb.id    acc
+1     50      61   110 1.16e-28     98.6     98.00  64.3239626 6B3Q_a 6B3Q_a
+2     50      37    86 1.17e-28     97.8     98.00  64.3153789 2KQP_A 2KQP_A
+3     50      39    74 1.08e-19     74.7    100.00  43.6721557 6PXV_D 6PXV_D
+4     49      28    58 9.23e-11     52.0     80.65  23.1059770 6U46_A 6U46_A
+5     50      38    60 1.45e-10     51.2    100.00  22.6542874 1EFE_A 1EFE_A
+6     50      82   105 3.40e-10     51.6     95.83  21.8020755 6ZI8_A 6ZI8_A
+7     50      22    49 4.47e-10     49.7     82.14  21.5284625 7JP3_A 7JP3_A
+8     27       5    31 4.67e-10     49.3     96.30  21.4846919 1T0C_A 1T0C_A
+9     50       1    22 7.99e-10     48.9    100.00  20.9476602 2QIU_A 2QIU_A
+10    50      32    53 1.84e-09     48.5    100.00  20.1135003 1ZEI_A 1ZEI_A
+11    50      28    50 2.24e-09     48.1     95.65  19.9167900 1SJU_A 1SJU_A
+12    50      35    57 2.64e-09     48.1     95.65  19.7524869 2JZQ_A 2JZQ_A
+13    50      29    50 3.08e-09     47.8    100.00  19.5983362 6INS_E 6INS_E
+14    50       1    21 7.66e-09     46.2    100.00  18.6872539 5MHD_A 5MHD_A
+15    50       1    21 8.44e-09     46.2    100.00  18.5902835 1A7F_A 1A7F_A
+16    50       1    21 9.44e-09     46.2    100.00  18.4783099 2KXK_A 2KXK_A
+17    50       1    21 1.16e-08     45.8    100.00  18.2722607 6TYH_A 6TYH_A
+18    50       1    21 1.37e-08     45.8    100.00  18.1058700 2BN3_A 2BN3_A
+19    50       1    21 2.73e-08     45.1    100.00  17.4163791 7MQO_A 7MQO_A
+20    50       1    21 2.95e-08     44.7    100.00  17.3388756 1XW7_A 1XW7_A
+21    50       1    21 3.25e-08     44.7     95.24  17.2420257 2JUM_A 2JUM_A
+22    50       2    21 4.83e-08     44.3    100.00  16.8458343 1MHI_A 1MHI_A
+23    50       1    21 5.22e-08     44.3     95.24  16.7681833 5MWQ_A 5MWQ_A
+24    50       1    21 5.27e-08     44.3     95.24  16.7586504 1JCA_A 1JCA_A
+25    50       1    21 5.51e-08     44.3     95.24  16.7141161 1K3M_A 1K3M_A
+26    50       1    21 5.63e-08     44.3     95.24  16.6925713 7SL2_G 7SL2_G
+27    50       1    21 6.02e-08     43.9     95.24  16.6255935 2JUU_A 2JUU_A
+28    50      35    57 6.14e-08     44.7     91.30  16.6058560 5WBT_A 5WBT_A
+29    50       1    21 6.35e-08     43.9     95.24  16.5722259 1KMF_A 1KMF_A
+30    50      35    57 6.49e-08     44.7     91.30  16.5504182 5WDM_A 5WDM_A
+31    50       1    21 6.64e-08     43.9     95.24  16.5275688 4A7E_A 4A7E_A
+32    50       1    21 6.64e-08     43.9     95.24  16.5275688 1IOH_A 1IOH_A
+33    50       1    21 6.71e-08     43.9     95.24  16.5170818 1J73_A 1J73_A
+34    49       1    20 6.79e-08     43.9    100.00  16.5052298 2WBY_C 2WBY_C
+35    49       1    20 7.25e-08     43.9    100.00  16.4396793 4IYD_A 4IYD_A
+36    50       1    21 7.41e-08     43.9     95.24  16.4178503 1APH_A 1APH_A
+37    50       1    21 8.18e-08     43.5     95.24  16.3189886 4EFX_A 4EFX_A
+38    50       1    21 9.54e-08     43.5     95.24  16.1651873 7SL1_E 7SL1_E
+39    50       1    21 1.67e-07     42.7     95.24  15.6052720 3GKY_A 3GKY_A
+40    50       1    21 1.95e-07     42.7     95.24  15.4502663 6S4I_A 6S4I_A
+41    50       1    21 1.99e-07     42.7     95.24  15.4299610 1IOG_A 1IOG_A
+42    50       1    21 2.12e-07     42.7     90.48  15.3666796 3KQ6_A 3KQ6_A
+43    50       1    21 2.64e-07     42.4     90.48  15.1473167 6VES_A 6VES_A
+44    50       2    21 4.01e-07     42.0     95.00  14.7293044 3FQ9_A 3FQ9_A
+45    50       1    21 5.33e-07     41.6     95.24  14.4447444 2L1Z_A 2L1Z_A
+46    50       1    21 1.26e-06     40.8     90.48  13.5843988 5AZZ_A 5AZZ_A
+47    50       1    21 1.37e-06     40.4     90.48  13.5006998 1VKT_A 1VKT_A
+48    50       4    21 1.38e-06     40.4    100.00  13.4934271 1LKQ_A 1LKQ_A
+49    50       1    21 2.45e-06     40.0     90.48  12.9194225 5T7R_A 5T7R_A
+50    50       1    17 8.01e-06     38.5    100.00  11.7348198 2W44_A 2W44_A
+51    30       1    16 1.00e-03     33.5    100.00   6.9077553 4Y19_C 4Y19_C
+52    49      37    61 8.00e-03     32.0     64.00   4.8283137 6UM2_B 6UM2_B
+53    49      36    60 8.00e-03     32.0     64.00   4.8283137 1IGL_A 1IGL_A
+54    49      41    62 2.60e-02     30.8     68.18   3.6496587 5L3M_A 5L3M_A
+55    49      41    62 2.70e-02     30.4     68.18   3.6119184 5L3N_A 5L3N_A
+56    49      25    48 3.60e-02     30.0     62.50   3.3242363 1B9G_A 1B9G_A
+57    49      29    51 7.30e-02     29.3     69.57   2.6172958 1TGR_A 1TGR_A
+58    49      42    61 1.80e-01     28.5     70.00   1.7147984 1BQT_A 1BQT_A
+59    50       3    24 1.80e-01     27.7     63.64   1.7147984 2WFV_A 2WFV_A
+60    49      55    74 2.00e-01     28.5     70.00   1.6094379 3LRI_A 3LRI_A
+61    49      43    62 4.00e-01     27.7     70.00   0.9162907 6RVA_X 6RVA_X
+62    49      88   109 4.00e-01     28.5     68.18   0.9162907 8EYR_C 8EYR_C
+63    50       1    21 1.80e+00     25.0     61.90  -0.5877867 2WFU_A 2WFU_A
+64    50       1    37 5.10e+00     25.0     47.50  -1.6292405 5NCN_B 5NCN_B
+65    30     455   471 7.10e+00     25.0     76.47  -1.9600948 4P1B_A 4P1B_A
+66    30     455   471 7.10e+00     25.0     76.47  -1.9600948 3RMK_A 3RMK_A
+67    30     455   471 7.10e+00     25.0     76.47  -1.9600948 3RI7_A 3RI7_A
+68    30     456   472 7.10e+00     25.0     76.47  -1.9600948 5TDS_A 5TDS_A
+69    30     456   472 7.10e+00     25.0     76.47  -1.9600948 3GE3_A 3GE3_A
+70    30     456   472 7.10e+00     25.0     76.47  -1.9600948 3DHG_A 3DHG_A
+
+$raw
+       queryid subjectids identity alignmentlength mismatches gapopens q.start
+1  Query_21773     6B3Q_a   98.000              50          1        0       1
+2  Query_21773     2KQP_A   98.000              50          1        0       1
+3  Query_21773     6PXV_D  100.000              36          0        0      15
+4  Query_21773     6U46_A   77.419              31          7        0      19
+5  Query_21773     1EFE_A  100.000              23          0        0      28
+6  Query_21773     6ZI8_A   91.667              24          2        0      27
+7  Query_21773     7JP3_A   78.571              28          6        0      23
+8  Query_21773     1T0C_A   96.296              27          1        0       1
+9  Query_21773     2QIU_A  100.000              22          0        0      29
+10 Query_21773     1ZEI_A   95.455              22          1        0      29
+11 Query_21773     1SJU_A   91.304              23          2        0      28
+12 Query_21773     2JZQ_A   91.304              23          2        0      28
+13 Query_21773     6INS_E   95.455              22          1        0      29
+14 Query_21773     5MHD_A  100.000              21          0        0      30
+15 Query_21773     1A7F_A  100.000              21          0        0      30
+16 Query_21773     2KXK_A  100.000              21          0        0      30
+17 Query_21773     6TYH_A  100.000              21          0        0      30
+18 Query_21773     2BN3_A   95.238              21          1        0      30
+19 Query_21773     7MQO_A   95.238              21          1        0      30
+20 Query_21773     1XW7_A   95.238              21          1        0      30
+21 Query_21773     2JUM_A   95.238              21          1        0      30
+22 Query_21773     1MHI_A  100.000              20          0        0      31
+23 Query_21773     5MWQ_A   95.238              21          1        0      30
+24 Query_21773     1JCA_A   95.238              21          1        0      30
+25 Query_21773     1K3M_A   95.238              21          1        0      30
+26 Query_21773     7SL2_G   95.238              21          1        0      30
+27 Query_21773     2JUU_A   95.238              21          1        0      30
+28 Query_21773     5WBT_A   86.957              23          3        0      28
+29 Query_21773     1KMF_A   95.238              21          1        0      30
+30 Query_21773     5WDM_A   86.957              23          3        0      28
+31 Query_21773     4A7E_A   95.238              21          1        0      30
+32 Query_21773     1IOH_A   95.238              21          1        0      30
+33 Query_21773     1J73_A   95.238              21          1        0      30
+34 Query_21773     2WBY_C  100.000              20          0        0      30
+35 Query_21773     4IYD_A  100.000              20          0        0      30
+36 Query_21773     1APH_A   90.476              21          2        0      30
+37 Query_21773     4EFX_A   95.238              21          1        0      30
+38 Query_21773     7SL1_E   95.238              21          1        0      30
+39 Query_21773     3GKY_A   90.476              21          2        0      30
+40 Query_21773     6S4I_A   95.238              21          1        0      30
+41 Query_21773     1IOG_A   95.238              21          1        0      30
+42 Query_21773     3KQ6_A   90.476              21          2        0      30
+43 Query_21773     6VES_A   90.476              21          2        0      30
+44 Query_21773     3FQ9_A   95.000              20          1        0      31
+45 Query_21773     2L1Z_A   85.714              21          3        0      30
+46 Query_21773     5AZZ_A   85.714              21          3        0      30
+47 Query_21773     1VKT_A   90.476              21          2        0      30
+48 Query_21773     1LKQ_A  100.000              18          0        0      33
+49 Query_21773     5T7R_A   90.476              21          2        0      30
+50 Query_21773     2W44_A  100.000              17          0        0      34
+51 Query_21773     4Y19_C  100.000              16          0        0      15
+52 Query_21773     6UM2_B   56.000              25         11        0      25
+53 Query_21773     1IGL_A   56.000              25         11        0      25
+54 Query_21773     5L3M_A   59.091              22          9        0      28
+55 Query_21773     5L3N_A   59.091              22          9        0      28
+56 Query_21773     1B9G_A   50.000              24         12        0      26
+57 Query_21773     1TGR_A   47.826              23         12        0      27
+58 Query_21773     1BQT_A   55.000              20          9        0      30
+59 Query_21773     2WFV_A   45.455              22         12        0      29
+60 Query_21773     3LRI_A   55.000              20          9        0      30
+61 Query_21773     6RVA_X   50.000              20         10        0      30
+62 Query_21773     8EYR_C   50.000              22         11        0      28
+63 Query_21773     2WFU_A   42.857              21         12        0      30
+64 Query_21773     5NCN_B   30.000              40         25        1      11
+65 Query_21773     4P1B_A   52.941              17          8        0      14
+66 Query_21773     3RMK_A   52.941              17          8        0      14
+67 Query_21773     3RI7_A   52.941              17          8        0      14
+68 Query_21773     5TDS_A   52.941              17          8        0      14
+69 Query_21773     3GE3_A   52.941              17          8        0      14
+70 Query_21773     3DHG_A   52.941              17          8        0      14
+   q.end s.start s.end   evalue bitscore positives
+1     50      61   110 1.16e-28     98.6     98.00
+2     50      37    86 1.17e-28     97.8     98.00
+3     50      39    74 1.08e-19     74.7    100.00
+4     49      28    58 9.23e-11     52.0     80.65
+5     50      38    60 1.45e-10     51.2    100.00
+6     50      82   105 3.40e-10     51.6     95.83
+7     50      22    49 4.47e-10     49.7     82.14
+8     27       5    31 4.67e-10     49.3     96.30
+9     50       1    22 7.99e-10     48.9    100.00
+10    50      32    53 1.84e-09     48.5    100.00
+11    50      28    50 2.24e-09     48.1     95.65
+12    50      35    57 2.64e-09     48.1     95.65
+13    50      29    50 3.08e-09     47.8    100.00
+14    50       1    21 7.66e-09     46.2    100.00
+15    50       1    21 8.44e-09     46.2    100.00
+16    50       1    21 9.44e-09     46.2    100.00
+17    50       1    21 1.16e-08     45.8    100.00
+18    50       1    21 1.37e-08     45.8    100.00
+19    50       1    21 2.73e-08     45.1    100.00
+20    50       1    21 2.95e-08     44.7    100.00
+21    50       1    21 3.25e-08     44.7     95.24
+22    50       2    21 4.83e-08     44.3    100.00
+23    50       1    21 5.22e-08     44.3     95.24
+24    50       1    21 5.27e-08     44.3     95.24
+25    50       1    21 5.51e-08     44.3     95.24
+26    50       1    21 5.63e-08     44.3     95.24
+27    50       1    21 6.02e-08     43.9     95.24
+28    50      35    57 6.14e-08     44.7     91.30
+29    50       1    21 6.35e-08     43.9     95.24
+30    50      35    57 6.49e-08     44.7     91.30
+31    50       1    21 6.64e-08     43.9     95.24
+32    50       1    21 6.64e-08     43.9     95.24
+33    50       1    21 6.71e-08     43.9     95.24
+34    49       1    20 6.79e-08     43.9    100.00
+35    49       1    20 7.25e-08     43.9    100.00
+36    50       1    21 7.41e-08     43.9     95.24
+37    50       1    21 8.18e-08     43.5     95.24
+38    50       1    21 9.54e-08     43.5     95.24
+39    50       1    21 1.67e-07     42.7     95.24
+40    50       1    21 1.95e-07     42.7     95.24
+41    50       1    21 1.99e-07     42.7     95.24
+42    50       1    21 2.12e-07     42.7     90.48
+43    50       1    21 2.64e-07     42.4     90.48
+44    50       2    21 4.01e-07     42.0     95.00
+45    50       1    21 5.33e-07     41.6     95.24
+46    50       1    21 1.26e-06     40.8     90.48
+47    50       1    21 1.37e-06     40.4     90.48
+48    50       4    21 1.38e-06     40.4    100.00
+49    50       1    21 2.45e-06     40.0     90.48
+50    50       1    17 8.01e-06     38.5    100.00
+51    30       1    16 1.00e-03     33.5    100.00
+52    49      37    61 8.00e-03     32.0     64.00
+53    49      36    60 8.00e-03     32.0     64.00
+54    49      41    62 2.60e-02     30.8     68.18
+55    49      41    62 2.70e-02     30.4     68.18
+56    49      25    48 3.60e-02     30.0     62.50
+57    49      29    51 7.30e-02     29.3     69.57
+58    49      42    61 1.80e-01     28.5     70.00
+59    50       3    24 1.80e-01     27.7     63.64
+60    49      55    74 2.00e-01     28.5     70.00
+61    49      43    62 4.00e-01     27.7     70.00
+62    49      88   109 4.00e-01     28.5     68.18
+63    50       1    21 1.80e+00     25.0     61.90
+64    50       1    37 5.10e+00     25.0     47.50
+65    30     455   471 7.10e+00     25.0     76.47
+66    30     455   471 7.10e+00     25.0     76.47
+67    30     455   471 7.10e+00     25.0     76.47
+68    30     456   472 7.10e+00     25.0     76.47
+69    30     456   472 7.10e+00     25.0     76.47
+70    30     456   472 7.10e+00     25.0     76.47
+
+$url
+                                                                                                                                                                          0XSRM8ZK016 
+"https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Get&amp;FORMAT_OBJECT=Alignment&amp;ALIGNMENT_VIEW=Tabular&amp;RESULTS_FILE=on&amp;FORMAT_TYPE=CSV&amp;ALIGNMENTS=20000&amp;DESCRIPTIONS=20000&amp;RID=0XSRM8ZK016" 
+
+attr(,"class")
+[1] "blast"</code></pre>
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

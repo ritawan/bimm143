@@ -1,0 +1,292 @@
+---
+title: "lab19"
+author: "Xinlong Wan"
+format: pdf
+---
+
+# Investigating pertussis cases by year
+
+- install datapasta
+- copy the data table to clipboard
+- in "Addins" select "paste as data.frame"
+
+```{r}
+cdc <- data.frame(
+                                            Year = c(1922L,1923L,1924L,
+                                                     1925L,1926L,1927L,1928L,
+                                                     1929L,1930L,1931L,1932L,
+                                                     1933L,1934L,1935L,1936L,
+                                                     1937L,1938L,1939L,1940L,
+                                                     1941L,1942L,1943L,1944L,
+                                                     1945L,1946L,1947L,1948L,
+                                                     1949L,1950L,1951L,
+                                                     1952L,1953L,1954L,1955L,
+                                                     1956L,1957L,1958L,1959L,
+                                                     1960L,1961L,1962L,1963L,
+                                                     1964L,1965L,1966L,1967L,
+                                                     1968L,1969L,1970L,1971L,
+                                                     1972L,1973L,1974L,1975L,
+                                                     1976L,1977L,1978L,
+                                                     1979L,1980L,1981L,1982L,
+                                                     1983L,1984L,1985L,1986L,
+                                                     1987L,1988L,1989L,1990L,
+                                                     1991L,1992L,1993L,1994L,
+                                                     1995L,1996L,1997L,1998L,
+                                                     1999L,2000L,2001L,2002L,
+                                                     2003L,2004L,2005L,
+                                                     2006L,2007L,2008L,2009L,
+                                                     2010L,2011L,2012L,2013L,
+                                                     2014L,2015L,2016L,2017L,
+                                                     2018L,2019L),
+                    Cases = c(107473,164191,165418,
+                                                     152003,202210,181411,
+                                                     161799,197371,166914,172559,
+                                                     215343,179135,265269,
+                                                     180518,147237,214652,
+                                                     227319,103188,183866,222202,
+                                                     191383,191890,109873,
+                                                     133792,109860,156517,74715,
+                                                     69479,120718,68687,
+                                                     45030,37129,60886,62786,
+                                                     31732,28295,32148,40005,
+                                                     14809,11468,17749,17135,
+                                                     13005,6799,7717,9718,
+                                                     4810,3285,4249,3036,3287,
+                                                     1759,2402,1738,1010,
+                                                     2177,2063,1623,1730,1248,
+                                                     1895,2463,2276,3589,
+                                                     4195,2823,3450,4157,4570,
+                                                     2719,4083,6586,4617,
+                                                     5137,7796,6564,7405,7298,
+                                                     7867,7580,9771,11647,
+                                                     25827,25616,15632,10454,
+                                                     13278,16858,27550,18719,
+                                                     48277,28639,32971,20762,
+                                                     17972,18975,15609,18617)
+                  )
+
+head(cdc)
+
+
+```
+
+> Q1
+
+```{r}
+library(ggplot2)
+cases_plot <- ggplot(cdc) +
+  aes(Year, Cases) +
+  geom_point() +
+  geom_line() +
+  labs(x="Year",
+       y="Number of cases",
+       title="Pertussis Cases by Year (1922-2019)")
+
+cases_plot
+```
+# Two vaccines (wP & aP)
+
+> Q2
+
+```{r}
+cases_plot + 
+  geom_vline(xintercept=1996, col="red") +
+  geom_vline(xintercept=1946, col="blue")
+```
+
+> Q3. After the introduction of aP vaccine, the cases remain low and then increases. This suggests that aP is not as effective as wP, which could be because that ap is a simplfied version of wP. Other explanation could that the testing is more sensitive so that some cases that weren't able to detected are deteced. Also, the infection is from bacterial, so they could evolve and makes the vaccine less effective.
+
+# CMI-PB Data
+
+```{r}
+# Allows us to read, write and process JSON data
+library(jsonlite)
+subject <- read_json("https://www.cmi-pb.org/api/subject", simplifyVector = TRUE) 
+head(subject, 3)
+```
+
+> Q4
+
+```{r}
+table(subject$infancy_vac)
+```
+
+> Q5
+
+```{r}
+table(subject$biological_sex)
+```
+
+> Q6
+
+```{r}
+table(subject$biological_sex, subject$race)
+```
+
+```{r}
+library(lubridate)
+```
+
+> Q7
+
+```{r}
+subject$age <- time_length(today() - ymd(subject$year_of_birth), "years")
+
+print(paste("the average age of wP individuals is", mean(subject[subject$infancy_vac=="wP", "age"])))
+print(paste("the average age of aP individuals is", mean(subject[subject$infancy_vac=="aP", "age"])))
+
+t.test(subject[subject$infancy_vac=="wP", "age"], subject[subject$infancy_vac=="aP", "age"], paired=FALSE, alternative="two.sided")
+```
+
+pvalue < 0.001
+
+Yes they are significantly different.
+
+> Q8
+
+```{r}
+subject$age_at_boost <- time_length( ymd(subject$date_of_boost) - ymd(subject$year_of_birth), "years")
+
+subject$age_at_boost
+```
+
+
+> Q9
+
+```{r}
+ggplot(subject) +
+  aes(time_length(age, "year"),
+      fill=as.factor(infancy_vac)) +
+  geom_histogram(show.legend=FALSE) +
+  facet_wrap(vars(infancy_vac), nrow=2) 
+```
+
+Yes they looks significantly different from the plot, as majority of data from the two groups are not overlapping.
+
+
+# Joining multiple table
+
+```{r}
+specimen <- read_json("https://www.cmi-pb.org/api//specimen", simplifyVector = TRUE) 
+titer <- read_json("https://www.cmi-pb.org/api/ab_titer", simplifyVector = TRUE) 
+```
+
+> Q9
+
+```{r}
+library(dplyr)
+meta <- left_join(specimen, subject)
+dim(meta)
+head(meta)
+```
+
+> Q10
+
+```{r}
+abdata <- inner_join(titer, meta)
+dim(abdata)
+```
+
+> Q11
+
+```{r}
+table(abdata$isotype)
+```
+
+> Q12
+
+```{r}
+table(abdata$visit)
+```
+
+A lot less people complete visit 8 compared to the previous 7 visits.
+
+# Examine IgG1 Ab titer levels
+
+```{r}
+ig1 <- abdata %>% filter(isotype == "IgG1", visit!=8)
+head(ig1)
+```
+
+> Q13
+
+```{r}
+ggplot(ig1) +
+  aes(MFI, antigen) +
+  geom_boxplot() + 
+  facet_wrap(vars(visit), nrow=2)
+```
+
+> Q14
+
+The antigen FIM2/3 shows the most significant difference. This antigen is extra-cellular fimbriae proteins from B.pertussis, which is the "effective" part of the vaccine. After injection of the vaccine, this antigen increase in the body.
+
+> Q15
+
+```{r}
+filter(ig1, antigen=="Measles") %>%
+  ggplot() +
+  aes(MFI, col=infancy_vac) +
+  geom_boxplot(show.legend = FALSE) +
+  facet_wrap(vars(visit)) +
+  theme_bw()
+```
+
+```{r}
+filter(ig1, antigen=="FIM2/3") %>%
+  ggplot() +
+  aes(MFI, col=infancy_vac) +
+  geom_boxplot(show.legend = FALSE) +
+  facet_wrap(vars(visit)) +
+  theme_bw()
+```
+
+> Q16
+
+Measles doesn't show a significant change overtime for both antibody. FIM2/3 shows a increase at visit 4, continue to increase at visit 5, and slighly decrease at visit 6 and 7, which suggesting the patient is taking the effective part of the vaccine. The trend is consistent for both wP and aP. 
+
+> Q17
+
+The trend is mostly consistent for both wP and aP. For FIM2/3 after visit 4, aP shows a higher level of response than wP, but the difference is not large.
+
+# Obtaining CMI-PB RNASeq data
+
+```{r}
+url <- "https://www.cmi-pb.org/api/v2/rnaseq?versioned_ensembl_gene_id=eq.ENSG00000211896.7"
+
+rna <- read_json(url, simplifyVector = TRUE) 
+ssrna <- inner_join(rna, meta)
+```
+
+> Q18
+
+```{r}
+ggplot(ssrna) +
+  aes(visit, tpm, group=subject_id) +
+  geom_point() +
+  geom_line(alpha=0.2)
+```
+
+> Q19
+
+The expression of this gene peaked at visit 4, which is also when FIM2/3 peaked. Suggesting cells are making more antibody to target antigen FIM2/3.
+
+> Q20
+
+It matches the trend until visit 4. Afterwards, the gene expression decreases drastically, but the antibody made by the gene stays in the cells and continues to target FIM2/3.
+
+```{r}
+ggplot(ssrna) +
+  aes(tpm, col=infancy_vac) +
+  geom_boxplot() +
+  facet_wrap(vars(visit))
+```
+
+```{r}
+ssrna %>%  
+  filter(visit==4) %>% 
+  ggplot() +
+    aes(tpm, col=infancy_vac) + geom_density() + 
+    geom_rug() 
+```
+
