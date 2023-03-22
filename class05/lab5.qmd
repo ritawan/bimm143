@@ -1,7 +1,7 @@
 ---
 title: "class05"
 author: "Rita"
-format: pdf
+format: markdown
 ---
 
 # Plotting in R

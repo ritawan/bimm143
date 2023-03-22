@@ -1,6 +1,6 @@
 ---
 title: "class08"
-format: pdf
+format: markdown
 ---
 
 # Import the data

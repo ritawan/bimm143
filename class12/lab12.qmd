@@ -1,7 +1,7 @@
 ---
 title: "lab12"
 author: "Xinlong Wan"
-format: pdf
+format: markdown
 ---
 
 # Load package and data
